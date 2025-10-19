@@ -1,25 +1,39 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { RoundedCard } from './Card';
 import { colors } from '../theme/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export default function PromoBanner() {
-  return (
+type Props = {
+  onPress?: () => void;
+};
+
+export default function PromoBanner({ onPress }: Props) {
+  const content = (
     <RoundedCard style={styles.card}>
       <Image
         source={{ uri: 'https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1200&q=60&auto=format&fit=crop' }}
         resizeMode="cover"
         style={styles.image}
       />
-  <LinearGradient colors={["rgba(0,0,0,0.3)", "rgba(0,0,0,0)"]} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} style={styles.gradient} />
-  <View style={styles.overlay}>
+      <LinearGradient colors={["rgba(0,0,0,0.3)", "rgba(0,0,0,0)"]} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} style={styles.gradient} />
+      <View style={styles.overlay}>
         <Text style={styles.title}>Chegou nova onda de calor, como proceder</Text>
         <Text style={styles.subtitle}>Confira aqui 10 dicas de cuidados com seus procedimentos</Text>
       </View>
     </RoundedCard>
   );
+
+  if (onPress) {
+    return (
+      <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+        {content}
+      </TouchableOpacity>
+    );
+  }
+
+  return content;
 }
 
 const styles = StyleSheet.create({

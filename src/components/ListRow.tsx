@@ -18,8 +18,8 @@ export default function ListRow({ left, title, subtitle, actionLabel, right, sty
     <View style={[styles.row, style]}>
       <View style={styles.left}>{left}</View>
       <View style={styles.center}>
-        <Text style={styles.title}>{title}</Text>
         {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+        <Text style={styles.title}>{title}</Text>
       </View>
       {right ? right : actionLabel ? <Text style={styles.action}>{actionLabel}</Text> : <RightChevron />}
     </View>
@@ -27,10 +27,10 @@ export default function ListRow({ left, title, subtitle, actionLabel, right, sty
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 14 },
-  left: { width: 32, alignItems: 'center' },
-  center: { flex: 1 },
-  title: { color: colors.textPrimary, fontWeight: '700', fontSize: 17, letterSpacing: 0.1 },
-  subtitle: { color: colors.textMuted, marginTop: 2 },
+  row: { flexDirection: 'row', alignItems: 'flex-start', paddingHorizontal: 16, paddingVertical: 14 },
+  left: { width: 40, alignItems: 'center' },
+  center: { flex: 1, marginLeft: -8 },
+  title: { color: colors.textPrimary, fontWeight: '700', fontSize: 20, letterSpacing: 0.1 },
+  subtitle: { color: colors.textMuted, fontSize: 12, marginBottom: 4 },
   action: { color: colors.textMuted },
 });

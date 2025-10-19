@@ -16,8 +16,7 @@ export type MessagesSectionProps = {
 export default function MessagesSection({ messages }: MessagesSectionProps) {
   return (
     <View style={styles.container}>
-      <SectionHeader title="Mensagens" />
-      <Divider />
+      <Divider style={styles.whiteDivider} />
       <View style={styles.list}>
         {messages.map((m) => (
           <View key={m.id} style={styles.rowWrap}>
@@ -31,6 +30,7 @@ export default function MessagesSection({ messages }: MessagesSectionProps) {
 
 const styles = StyleSheet.create({
   container: { paddingHorizontal: layout.screenPadding, paddingTop: 8 },
+  whiteDivider: { backgroundColor: '#FFFFFF' },
   list: { },
   rowWrap: {},
 });

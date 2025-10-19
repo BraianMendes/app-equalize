@@ -1,4 +1,5 @@
-import React from 'react';
+// ...existing code...
+import React, { useState } from 'react';
 import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Badge, IconButton } from 'react-native-paper';
@@ -6,68 +7,141 @@ import { colors } from '../theme/colors';
 import Icon from '../design-system/Icon';
 import { layout } from '../theme/layout';
 
+// ...existing code...
+
 export type AppHeaderProps = {
   greeting: string;
   name: string;
   unreadCount?: number;
   onPressMessages: () => void;
+  onPressShare?: () => void;
   onPressProfile?: () => void;
   onLayout?: (e: LayoutChangeEvent) => void;
   showBack?: boolean;
   onPressBack?: () => void;
+  includeSpacer?: boolean; // rendera um espaçador medido logo abaixo do header
 };
 
-export default function AppHeader({ greeting, name, unreadCount = 0, onPressMessages, onPressProfile, onLayout, showBack, onPressBack }: AppHeaderProps) {
+export default function AppHeader({
+  greeting,
+  name,
+  unreadCount = 0,
+  onPressMessages,
+  onPressProfile,
+  onPressShare,
+  onLayout,
+  showBack,
+  onPressBack,
+  includeSpacer = false,
+}: AppHeaderProps) {
+  const [measuredHeight, setMeasuredHeight] = useState<number>(0);
+
+  function handleLayout(e: LayoutChangeEvent) {
+    const h = e.nativeEvent.layout.height;
+    setMeasuredHeight(h);
+    if (onLayout) onLayout(e);
+  }
+
   return (
-    <SafeAreaView style={styles.header} onLayout={onLayout}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        {showBack && (
+    <>
+  <SafeAreaView style={styles.header} onLayout={handleLayout}>
+        <View style={styles.titleWrapper}>
+          {showBack && (
+            <IconButton
+              accessibilityLabel="Voltar"
+              icon={(props) => <Icon name="chevron-left" color={props.color} size={24} />}
+              iconColor={colors.textPrimary}
+              size={24}
+              onPress={onPressBack}
+            />
+          )}
+          <View style={styles.titleTextWrapper}>
+            <Text style={styles.hello}>{greeting}</Text>
+            <Text style={styles.name}>{name}</Text>
+          </View>
+        </View>
+        <View style={styles.headerActions}>
+          {/* share button */}
           <IconButton
-            accessibilityLabel="Voltar"
-            icon={(props) => <Icon name="chevron-left" color={props.color} size={24} />}
+            accessibilityLabel="Compartilhar"
+            icon={(props) => <Icon name="share-variant" color={props.color} size={24} />}
             iconColor={colors.textPrimary}
             size={24}
-            onPress={onPressBack}
+            style={{ marginHorizontal: 1 }}
+            onPress={onPressShare}
           />
-        )}
-        <Text style={styles.hello}>{greeting}</Text>
-        <Text style={styles.name}>{name}</Text>
-      </View>
-      <View style={styles.headerActions}>
-        <View style={{ position: 'relative' }}>
+          <View style={{ position: 'relative' }}>
+            <IconButton
+              accessibilityLabel="Mensagens"
+              icon={(props) => <Icon name="email-outline" color={props.color} size={24} />}
+              iconColor={colors.textPrimary}
+              size={24}
+              style={{ marginHorizontal: 1 }}
+              onPress={onPressMessages}
+            />
+            {!!unreadCount && <Badge style={styles.badge} size={16}>{unreadCount}</Badge>}
+          </View>
           <IconButton
-            accessibilityLabel="Mensagens"
-            icon={(props) => <Icon name="email-outline" color={props.color} size={22} />}
+            accessibilityLabel="Perfil"
+            icon={(props) => <Icon name="account-circle-outline" color={props.color} size={24} />}
             iconColor={colors.textPrimary}
-            size={22}
-            onPress={onPressMessages}
+            size={24}
+            style={{ marginHorizontal: 1 }}
+            onPress={onPressProfile}
           />
-          {!!unreadCount && <Badge style={styles.badge} size={16}>{unreadCount}</Badge>}
         </View>
-        <IconButton
-          accessibilityLabel="Perfil"
-          icon={(props) => <Icon name="account-circle-outline" color={props.color} size={22} />}
-          iconColor={colors.textPrimary}
-          size={22}
-          onPress={onPressProfile}
-        />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+
+      {/* Espaçador dinâmico que empurra o conteúdo para ficar abaixo do cabeçalho */}
+      {includeSpacer && <View style={{ height: measuredHeight || DEFAULT_HEADER_SPACER_HEIGHT }} />}
+    </>
   );
 }
 
+// ...existing code...
+
 const styles = StyleSheet.create({
   header: {
-    paddingTop: layout.headerTopPadding,
-    paddingHorizontal: layout.floatingHorizontal,
-    paddingBottom: layout.headerBottomPadding,
+    // tornar o header mais compacto para as proporções desejadas
+  // reduzir o padding superior para diminuir a altura total
+  paddingTop: 4,
+  paddingLeft: layout.floatingHorizontal + 4,
+  // puxar os ícones um pouco mais para a direita reduzindo o paddingRight
+  paddingRight: Math.max(8, layout.floatingHorizontal - 6),
+    // reduzir o espaçamento inferior para aproximar o texto da borda inferior
+    paddingBottom: 0,
     backgroundColor: colors.headerBackground,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+
+    // tornar o header absoluto para garantir que ele fique acima do restante
+    // e permitir que um espaçador empurre o conteúdo abaixo dele
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    zIndex: 1000,
+    elevation: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 4,
   },
-  hello: { color: colors.textPrimary, fontSize: 18, opacity: 0.95 },
-  name: { color: colors.textPrimary, fontSize: 26, fontWeight: '700', letterSpacing: 0.2, marginTop: 2 },
-  headerActions: { flexDirection: 'row', alignItems: 'center' },
-  badge: { position: 'absolute', top: 4, right: 4, backgroundColor: '#D96F6F' },
+  hello: { color: colors.textPrimary, fontSize: 14, fontWeight: '700', opacity: 0.95, marginBottom: 2 },
+  name: { color: colors.textPrimary, fontSize: 18, fontWeight: '700', letterSpacing: 0.2, marginTop: 0 },
+  titleWrapper: { flexDirection: 'column', justifyContent: 'center' },
+  titleTextWrapper: { marginLeft: (layout.floatingHorizontal + 4) * 1.05 },
+  // move the action icons down so they align with the second line ("Monica")
+  headerActions: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
+  badge: { position: 'absolute', top: 2, right: 2, backgroundColor: '#D96F6F' },
 });
+
+// ...existing code...
+
+export const DEFAULT_HEADER_SPACER_HEIGHT = 72; // fallback aproximado para a altura visual do header (mais compacto)
+
+export const HeaderSpacer = ({ height }: { height?: number }) => {
+  return <View style={{ height: height ?? DEFAULT_HEADER_SPACER_HEIGHT }} />;
+};
+// ...existing code...
