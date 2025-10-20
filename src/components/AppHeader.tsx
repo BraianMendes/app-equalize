@@ -1,11 +1,13 @@
 // ...existing code...
 import React, { useState } from 'react';
-import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
+import type { LayoutChangeEvent } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Badge, IconButton } from 'react-native-paper';
 import { colors } from '../theme/colors';
 import Icon from '../design-system/Icon';
 import { layout } from '../theme/layout';
+import { strings } from '../app/strings';
 
 // ...existing code...
 
@@ -44,11 +46,11 @@ export default function AppHeader({
 
   return (
     <>
-  <SafeAreaView style={styles.header} onLayout={handleLayout}>
+      <SafeAreaView style={styles.header} onLayout={handleLayout}>
         <View style={styles.titleWrapper}>
           {showBack && (
             <IconButton
-              accessibilityLabel="Voltar"
+              accessibilityLabel={strings.a11yBack}
               icon={(props) => <Icon name="chevron-left" color={props.color} size={24} />}
               iconColor={colors.textPrimary}
               size={24}
@@ -63,7 +65,7 @@ export default function AppHeader({
         <View style={styles.headerActions}>
           {/* share button */}
           <IconButton
-            accessibilityLabel="Compartilhar"
+            accessibilityLabel={strings.a11yShare}
             icon={(props) => <Icon name="share-variant" color={props.color} size={24} />}
             iconColor={colors.textPrimary}
             size={24}
@@ -72,17 +74,21 @@ export default function AppHeader({
           />
           <View style={{ position: 'relative' }}>
             <IconButton
-              accessibilityLabel="Mensagens"
+              accessibilityLabel={strings.a11yMessages}
               icon={(props) => <Icon name="email-outline" color={props.color} size={24} />}
               iconColor={colors.textPrimary}
               size={24}
               style={{ marginHorizontal: 1 }}
               onPress={onPressMessages}
             />
-            {!!unreadCount && <Badge style={styles.badge} size={16}>{unreadCount}</Badge>}
+            {!!unreadCount && (
+              <Badge style={styles.badge} size={16}>
+                {unreadCount}
+              </Badge>
+            )}
           </View>
           <IconButton
-            accessibilityLabel="Perfil"
+            accessibilityLabel={strings.a11yProfile}
             icon={(props) => <Icon name="account-circle-outline" color={props.color} size={24} />}
             iconColor={colors.textPrimary}
             size={24}
@@ -103,11 +109,11 @@ export default function AppHeader({
 const styles = StyleSheet.create({
   header: {
     // tornar o header mais compacto para as proporções desejadas
-  // reduzir o padding superior para diminuir a altura total
-  paddingTop: 4,
-  paddingLeft: layout.floatingHorizontal + 4,
-  // puxar os ícones um pouco mais para a direita reduzindo o paddingRight
-  paddingRight: Math.max(8, layout.floatingHorizontal - 6),
+    // reduzir o padding superior para diminuir a altura total
+    paddingTop: 4,
+    paddingLeft: layout.floatingHorizontal + 4,
+    // puxar os ícones um pouco mais para a direita reduzindo o paddingRight
+    paddingRight: Math.max(8, layout.floatingHorizontal - 6),
     // reduzir o espaçamento inferior para aproximar o texto da borda inferior
     paddingBottom: 0,
     backgroundColor: colors.headerBackground,

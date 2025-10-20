@@ -19,7 +19,7 @@ const screens: Record<RouteName, React.ComponentType> = {
     return <LoginScreen onEnter={() => navigate('Main')} />;
   },
   Main: MainScreen,
-  Next: RegenerationScreen,
+  Regeneration: RegenerationScreen,
   Messages: MessagesScreen,
   Account: IdentityScreen,
   Care: Cuidados,

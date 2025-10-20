@@ -1,4 +1,5 @@
 import type { HomeData, HomeRepository } from '../../domain/home/types';
+import type { BackoffStrategy } from './backoff/BackoffStrategy';
 
 function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
@@ -8,7 +9,7 @@ export class RetryRepositoryDecorator implements HomeRepository {
   constructor(
     private readonly inner: HomeRepository,
     private readonly maxRetries: number = 3,
-    private readonly baseDelayMs: number = 200
+    private readonly backoff: BackoffStrategy,
   ) {}
 
   async getHomeData(): Promise<HomeData> {
@@ -20,7 +21,7 @@ export class RetryRepositoryDecorator implements HomeRepository {
       } catch (e) {
         lastError = e;
         if (attempt === this.maxRetries) break;
-        const delay = this.baseDelayMs * Math.pow(2, attempt);
+        const delay = this.backoff.nextDelayMs(attempt);
         await sleep(delay);
         attempt++;
       }

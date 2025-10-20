@@ -9,12 +9,14 @@ import { colors } from '../theme/colors';
 import type { ProcedureItem } from '../domain/home/types';
 import type { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DefaultStatusIconStrategy } from './status/StatusIcon';
+import { strings } from '../app/strings';
 
 export type ProcedureSectionProps = {
   title: string;
   iconName: React.ComponentProps<typeof MaterialCommunityIcons>['name'];
   items: ProcedureItem[];
   onItemPress?: (item: ProcedureItem) => void;
+  onPressSeeAll?: () => void;
 };
 
 const statusStrategy = new DefaultStatusIconStrategy();
@@ -27,13 +29,23 @@ function StatusBadge({ status }: { status: ProcedureItem['status'] }) {
   );
 }
 
-export default function ProcedureSection({ title, iconName, items, onItemPress }: ProcedureSectionProps) {
+export default function ProcedureSection({
+  title,
+  iconName,
+  items,
+  onItemPress,
+  onPressSeeAll,
+}: ProcedureSectionProps) {
   return (
     <View style={styles.section}>
       <SectionHeader
         title={title}
         icon={<Icon name={iconName} color={colors.brandSoft} size={18} />}
-  action={<Text style={styles.viewAll}>Ver todos ›</Text>}
+        action={
+          <Text style={styles.viewAll} onPress={onPressSeeAll} accessibilityRole="button">
+            {strings.seeMore} {strings.seeMoreArrow}
+          </Text>
+        }
         style={{ paddingHorizontal: 0 }}
       />
       <View style={[styles.list, { marginTop: 20, paddingHorizontal: 0 }]}>
@@ -53,10 +65,10 @@ const styles = StyleSheet.create({
   section: { paddingHorizontal: 0, marginTop: 10, marginBottom: 16 },
   viewAll: { color: colors.textMuted },
   list: { gap: 10, marginTop: 6 },
-  cardItem: { 
-    borderRadius: 16, 
-    borderWidth: 1, 
-    borderColor: colors.headerBackground 
+  cardItem: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: colors.headerBackground,
   },
   badge: {
     width: 28,

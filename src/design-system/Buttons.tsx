@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button as PaperButton, ButtonProps } from 'react-native-paper';
+import type { ButtonProps } from 'react-native-paper';
+import { Button as PaperButton } from 'react-native-paper';
 
 export function PrimaryButton(props: ButtonProps) {
   return <PaperButton mode="contained" {...props} />;

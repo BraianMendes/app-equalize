@@ -2,11 +2,18 @@ import React from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { colors } from '../theme/colors';
+import { strings } from '../app/strings';
 import Icon from '../design-system/Icon';
-let Video: any = null;
-let ResizeMode: any = { COVER: 'cover' };
+// Lazy load expo-av and type safely
+import type {
+  Video as VideoType,
+  AVPlaybackStatus,
+  AVPlaybackStatusSuccess,
+  ResizeMode as ResizeModeType,
+} from 'expo-av';
+let Video: typeof VideoType | null = null;
+let ResizeMode: typeof ResizeModeType | { COVER: 'cover' } = { COVER: 'cover' };
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const av = require('expo-av');
   Video = av.Video;
   ResizeMode = av.ResizeMode;
@@ -20,37 +27,38 @@ type Props = {
 };
 
 export default function MediaHero({ uri, videoUri, loop = true, muted = true }: Props) {
-  const ref = React.useRef<any>(null);
+  const ref = React.useRef<unknown>(null);
   const [playing, setPlaying] = React.useState(false);
-  
+
   const onToggle = async () => {
     if (!videoUri) return;
-    const status = await ref.current?.getStatusAsync();
-    if (status && 'isPlaying' in status && status.isPlaying) {
-      await ref.current?.pauseAsync();
+    const video = ref.current as VideoType | null;
+    const status = await video?.getStatusAsync?.();
+    if (status && 'isLoaded' in status && status.isLoaded && status.isPlaying) {
+      await video?.pauseAsync?.();
       setPlaying(false);
     } else {
-      await ref.current?.playAsync();
+      await video?.playAsync?.();
       setPlaying(true);
     }
   };
 
-  const onPlaybackStatusUpdate = (status: any) => {
-    if (status.isLoaded) {
-      setPlaying(status.isPlaying);
-      // Se o vídeo terminou e não está em loop, pausa e mostra o texto
-      if (status.didJustFinish && !loop) {
-        setPlaying(false);
-      }
+  const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
+    if ('isLoaded' in status && status.isLoaded) {
+      const s = status as AVPlaybackStatusSuccess;
+      setPlaying(s.isPlaying);
+      if (s.didJustFinish && !loop) setPlaying(false);
     }
   };
   return (
     <View style={styles.container}>
-    {videoUri && Video ? (
+      {videoUri && Video ? (
         <Video
-          ref={ref}
+          // ref typed as unknown; cast inside handlers
+          ref={ref as React.RefObject<VideoType>}
           source={{ uri: videoUri }}
           style={styles.image}
+          // @ts-expect-error ResizeMode type at runtime
           resizeMode={ResizeMode.COVER}
           isLooping={loop}
           shouldPlay={false}
@@ -67,11 +75,11 @@ export default function MediaHero({ uri, videoUri, loop = true, muted = true }: 
           </View>
         </TouchableOpacity>
       </View>
-      
+
       {/* Texto "Veja sua evolução" na parte inferior - só aparece quando não está reproduzindo */}
       {!playing && (
         <View style={styles.bottomTextContainer}>
-          <Text style={styles.bottomText}>Veja sua evolução</Text>
+          <Text style={styles.bottomText}>{strings.mediaSeeProgress}</Text>
         </View>
       )}
     </View>
@@ -87,8 +95,23 @@ const styles = StyleSheet.create({
     borderColor: colors.cardOutline,
   },
   image: { width: '100%', height: 220 },
-  overlay: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
-  playButton: { width: 56, height: 56, borderRadius: 28, backgroundColor: 'rgba(0,0,0,0.35)', alignItems: 'center', justifyContent: 'center' },
+  overlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(0,0,0,0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   bottomTextContainer: {
     position: 'absolute',
     left: 0,

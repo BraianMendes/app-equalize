@@ -1,5 +1,15 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Image, FlatList, Dimensions, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity, Pressable } from 'react-native';
+import type { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Image,
+  FlatList,
+  Dimensions,
+  TouchableOpacity,
+  Pressable,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Button, IconButton } from 'react-native-paper';
 import { colors } from '../theme/colors';
@@ -38,12 +48,18 @@ export default function IdentityScreen() {
             <Icon name="account-circle-outline" size={24} color={colors.textPrimary} />
             <Text style={styles.sectionTitle}>Minha Identidade</Text>
           </View>
-          
+
           <View style={styles.photoContainer}>
             <FlatList
               data={[
-                { id: '1', uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop' },
-                { id: '2', uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop' }
+                {
+                  id: '1',
+                  uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
+                },
+                {
+                  id: '2',
+                  uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
+                },
               ]}
               horizontal
               pagingEnabled
@@ -60,53 +76,49 @@ export default function IdentityScreen() {
               renderItem={({ item }) => (
                 <View style={styles.carouselItem}>
                   <View style={styles.photoFrame}>
-                    <Image 
-                      source={{ uri: item.uri }}
-                      style={styles.facePhoto}
-                      resizeMode="cover"
-                    />
-                    
+                    <Image source={{ uri: item.uri }} style={styles.facePhoto} resizeMode="cover" />
+
                     {/* Overlay dots for facial mapping */}
-                    <Pressable 
+                    <Pressable
                       style={[styles.touchArea, { top: 25, left: '50%', marginLeft: -21 }]}
                       onPressIn={() => showTooltip('testa')}
                       onPressOut={hideTooltip}
                     >
                       <View style={[styles.dot, { top: 15, left: 15 }]} />
                     </Pressable>
-                    
-                    <Pressable 
+
+                    <Pressable
                       style={[styles.touchArea, { top: 65, left: '30%', marginLeft: -21 }]}
                       onPressIn={() => showTooltip('sobrancelha')}
                       onPressOut={hideTooltip}
                     >
                       <View style={[styles.dot, { top: 15, left: 15 }]} />
                     </Pressable>
-                    
-                    <Pressable 
+
+                    <Pressable
                       style={[styles.touchArea, { top: 165, left: '50%', marginLeft: -21 }]}
                       onPressIn={() => showTooltip('boca')}
                       onPressOut={hideTooltip}
                     >
                       <View style={[styles.dot, { top: 15, left: 15 }]} />
                     </Pressable>
-                    
-                    <Pressable 
+
+                    <Pressable
                       style={[styles.touchArea, { top: 225, left: '50%', marginLeft: -21 }]}
                       onPressIn={() => showTooltip('queixo')}
                       onPressOut={hideTooltip}
                     >
                       <View style={[styles.dot, { top: 15, left: 15 }]} />
                     </Pressable>
-                    
-                    <Pressable 
+
+                    <Pressable
                       style={[styles.touchArea, { top: 305, left: '50%', marginLeft: -21 }]}
                       onPressIn={() => showTooltip('pescoco')}
                       onPressOut={hideTooltip}
                     >
                       <View style={[styles.dot, { top: 15, left: 15 }]} />
                     </Pressable>
-                    
+
                     {/* Date overlay at bottom of image */}
                     <View style={styles.dateOverlay}>
                       <Text style={styles.dateOverlayText}>05 de fevereiro de 2023</Text>
@@ -116,7 +128,7 @@ export default function IdentityScreen() {
               )}
             />
           </View>
-          
+
           {/* Tooltips renderizados fora do container da imagem */}
           {activeTooltip === 'testa' && (
             <>
@@ -127,7 +139,7 @@ export default function IdentityScreen() {
               </View>
             </>
           )}
-          
+
           {activeTooltip === 'sobrancelha' && (
             <>
               <View style={styles.tooltipOverlay} />
@@ -137,7 +149,7 @@ export default function IdentityScreen() {
               </View>
             </>
           )}
-          
+
           {activeTooltip === 'boca' && (
             <>
               <View style={styles.tooltipOverlay} />
@@ -147,7 +159,7 @@ export default function IdentityScreen() {
               </View>
             </>
           )}
-          
+
           {activeTooltip === 'queixo' && (
             <>
               <View style={styles.tooltipOverlay} />
@@ -157,7 +169,7 @@ export default function IdentityScreen() {
               </View>
             </>
           )}
-          
+
           {activeTooltip === 'pescoco' && (
             <>
               <View style={styles.tooltipOverlay} />
@@ -167,7 +179,7 @@ export default function IdentityScreen() {
               </View>
             </>
           )}
-          
+
           {/* Navigation dots */}
           <View style={styles.navigationDotsContainer}>
             <View style={styles.navigationDots}>
@@ -181,14 +193,20 @@ export default function IdentityScreen() {
         <View style={styles.textSection}>
           <Text style={styles.questionTitle}>Quem sou eu?</Text>
           <Text style={styles.answerText}>
-            Paciente do sexo feminino, 55 anos, super ativa. Deseja viver de forma intensa, feliz e com qualidade todas as fases da sua vida e está comprometida em se preparar para isso cuidando da sua saúde de forma preventiva. Busca apoio especializada com todas as informações, conhecimento, ciência e técnicas e tecnologia que há no mercado.
+            Paciente do sexo feminino, 55 anos, super ativa. Deseja viver de forma intensa, feliz e com
+            qualidade todas as fases da sua vida e está comprometida em se preparar para isso cuidando da sua
+            saúde de forma preventiva. Busca apoio especializada com todas as informações, conhecimento,
+            ciência e técnicas e tecnologia que há no mercado.
           </Text>
         </View>
 
         <View style={styles.textSection}>
           <Text style={styles.questionTitle}>O que te motivou a procurar o Equalize (suas queixas)?</Text>
           <Text style={styles.answerText}>
-            Deseja "equalizar" a sua imagem com seu espírito ativo e jovial. Tratar os sinais de flacidez de pele, tecido e vícios com procedimentos que de fato farão diferença trazendo resultado com segurança e naturalidade. Ter um aspecto saudável na pele. Também deseja se organizar melhor em aos agendamentos de acordo com os intervalos indicados para cada procedimento.
+            Deseja "equalizar" a sua imagem com seu espírito ativo e jovial. Tratar os sinais de flacidez de
+            pele, tecido e vícios com procedimentos que de fato farão diferença trazendo resultado com
+            segurança e naturalidade. Ter um aspecto saudável na pele. Também deseja se organizar melhor em
+            aos agendamentos de acordo com os intervalos indicados para cada procedimento.
           </Text>
         </View>
 
@@ -205,8 +223,10 @@ export default function IdentityScreen() {
           <View style={styles.photosContainer}>
             <View style={styles.photoItem}>
               <View style={styles.photoWrapper}>
-                <Image 
-                  source={{ uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop' }}
+                <Image
+                  source={{
+                    uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
+                  }}
                   style={styles.sidePhoto}
                   resizeMode="cover"
                 />
@@ -217,8 +237,10 @@ export default function IdentityScreen() {
             </View>
             <View style={styles.photoItem}>
               <View style={styles.photoWrapper}>
-                <Image 
-                  source={{ uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop' }}
+                <Image
+                  source={{
+                    uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
+                  }}
                   style={styles.sidePhoto}
                   resizeMode="cover"
                 />
@@ -236,8 +258,10 @@ export default function IdentityScreen() {
           <View style={[styles.photosContainer, { marginTop: 8 }]}>
             <View style={styles.photoItem}>
               <View style={styles.photoWrapper}>
-                <Image 
-                  source={{ uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop' }}
+                <Image
+                  source={{
+                    uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
+                  }}
                   style={styles.sidePhoto}
                   resizeMode="cover"
                 />
@@ -248,8 +272,10 @@ export default function IdentityScreen() {
             </View>
             <View style={styles.photoItem}>
               <View style={styles.photoWrapper}>
-                <Image 
-                  source={{ uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop' }}
+                <Image
+                  source={{
+                    uri: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
+                  }}
                   style={styles.sidePhoto}
                   resizeMode="cover"
                 />
@@ -264,7 +290,7 @@ export default function IdentityScreen() {
         {/* Objetivos e metas Section */}
         <View style={styles.textSection}>
           <Text style={styles.sectionTitle}>Objetivos e metas</Text>
-          
+
           <View style={styles.questionSection}>
             <Text style={styles.questionTitle}>Expectativas?</Text>
             <Text style={styles.questionText}>
@@ -274,23 +300,17 @@ export default function IdentityScreen() {
 
           <View style={styles.questionSection}>
             <Text style={styles.questionTitle}>Na visão do médico quais os pontos fortes?</Text>
-            <Text style={styles.questionText}>
-              Boa qualidade de pele.
-            </Text>
+            <Text style={styles.questionText}>Boa qualidade de pele.</Text>
           </View>
 
           <View style={styles.questionSection}>
             <Text style={styles.questionTitle}>Na visão do médico quais os pontos fracos?</Text>
-            <Text style={styles.questionText}>
-              Perda de volume e sustentação.
-            </Text>
+            <Text style={styles.questionText}>Perda de volume e sustentação.</Text>
           </View>
 
           <View style={styles.questionSection}>
             <Text style={styles.questionTitle}>O que mais gosta em você?</Text>
-            <Text style={styles.questionText}>
-              Olha e gosta do conjunto.
-            </Text>
+            <Text style={styles.questionText}>Olha e gosta do conjunto.</Text>
           </View>
 
           <View style={styles.questionSection}>
@@ -305,11 +325,31 @@ export default function IdentityScreen() {
       <BottomNavbar
         items={[
           { key: 'home', label: 'Página Inicial', icon: 'home-outline', onPress: () => navigate('Main') },
-          { key: 'identity', label: 'Identidade', customIcon: 'identity', onPress: () => navigate('Account') },
+          {
+            key: 'identity',
+            label: 'Identidade',
+            customIcon: 'identity',
+            onPress: () => navigate('Account'),
+          },
           { key: 'care', label: 'Cuidados', icon: 'molecule', onPress: () => navigate('Care') },
-          { key: 'regen', label: 'Regeneração', icon: 'arrow-collapse-vertical' },
-          { key: 'maint', label: 'Manutenção', icon: 'account-cog-outline', onPress: () => navigate('Maintenance') },
-          { key: 'checks', label: 'Checkups', icon: 'clipboard-pulse-outline', onPress: () => navigate('Checkups') },
+          {
+            key: 'regen',
+            label: 'Regeneração',
+            icon: 'arrow-collapse-vertical',
+            onPress: () => navigate('Regeneration'),
+          },
+          {
+            key: 'maint',
+            label: 'Manutenção',
+            icon: 'account-cog-outline',
+            onPress: () => navigate('Maintenance'),
+          },
+          {
+            key: 'checks',
+            label: 'Checkups',
+            icon: 'clipboard-pulse-outline',
+            onPress: () => navigate('Checkups'),
+          },
           { key: 'trail', label: 'Trilha', icon: 'map-marker-path', onPress: () => navigate('Trail') },
         ]}
       />
@@ -371,7 +411,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'white',
   },
-  
+
   // Área de toque aumentada
   touchArea: {
     width: 42,
@@ -492,7 +532,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
-  
+
   // Estilos do tooltip
   tooltipOverlay: {
     position: 'absolute',

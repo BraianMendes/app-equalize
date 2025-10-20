@@ -1,7 +1,10 @@
 import type { HomeData, HomeRepository } from '../../domain/home/types';
 
 export class TimeoutRepositoryDecorator implements HomeRepository {
-  constructor(private readonly inner: HomeRepository, private readonly timeoutMs: number) {}
+  constructor(
+    private readonly inner: HomeRepository,
+    private readonly timeoutMs: number,
+  ) {}
 
   async getHomeData(): Promise<HomeData> {
     return new Promise<HomeData>((resolve, reject) => {

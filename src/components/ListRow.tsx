@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Image, ViewProps } from 'react-native';
+import type { ViewProps } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { Text } from 'react-native-paper';
 import { colors } from '../theme/colors';
 import { RightChevron } from './IconBadge';

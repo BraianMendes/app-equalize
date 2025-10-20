@@ -12,6 +12,13 @@ export function RightChevron() {
 }
 
 const styles = StyleSheet.create({
-  badge: { width: 28, height: 28, borderRadius: 14, backgroundColor: colors.surfaceAlt, alignItems: 'center', justifyContent: 'center' },
+  badge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: colors.surfaceAlt,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   chev: { fontSize: 22, color: colors.textMuted },
 });

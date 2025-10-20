@@ -17,7 +17,9 @@ export default function SectionHeader({ title, icon, action, dense, style }: Pro
     <View style={[styles.container, dense && styles.containerDense, style]}>
       <View style={styles.left}>
         {icon}
-  <Text variant="titleMedium" style={styles.title}>{title}</Text>
+        <Text variant="titleMedium" style={styles.title}>
+          {title}
+        </Text>
       </View>
       {action}
     </View>
@@ -25,7 +27,12 @@ export default function SectionHeader({ title, icon, action, dense, style }: Pro
 }
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: spacing.lg },
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.lg,
+  },
   containerDense: { paddingHorizontal: spacing.md },
   left: { flexDirection: 'row', alignItems: 'center' },
   title: { color: colors.textPrimary, marginLeft: spacing.sm, fontWeight: '700', letterSpacing: 0.3 },

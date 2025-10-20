@@ -6,7 +6,7 @@ export class FailoverCompositeRepository implements HomeRepository {
   constructor(
     private readonly primary: HomeRepository,
     private readonly fallback: HomeRepository,
-    private readonly strategy: RepositorySelectionStrategy
+    private readonly strategy: RepositorySelectionStrategy,
   ) {}
 
   async getHomeData(): Promise<HomeData> {

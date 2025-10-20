@@ -12,6 +12,7 @@ export default function TrailScreen() {
   const { navigate, goBack } = useRouter();
   const [expandedCard, setExpandedCard] = React.useState<number | null>(null);
 
+  type Status = 'calendar' | 'check' | 'close' | 'circle';
   const trailItems = [
     {
       id: 1,
@@ -19,8 +20,8 @@ export default function TrailScreen() {
       title: 'Ultraformer MPT',
       category: 'Regeneração',
       icon: 'auto-fix',
-      status: 'calendar',
-      hasDownload: true
+      status: 'calendar' as Status,
+      hasDownload: true,
     },
     {
       id: 2,
@@ -28,8 +29,8 @@ export default function TrailScreen() {
       title: 'Rever Programação',
       category: 'Checkups',
       icon: 'clipboard-pulse-outline',
-      status: 'check',
-      hasDownload: true
+      status: 'check' as Status,
+      hasDownload: true,
     },
     {
       id: 3,
@@ -37,8 +38,8 @@ export default function TrailScreen() {
       title: 'Receita manipulados',
       category: 'Cuidados',
       icon: 'molecule',
-      status: 'check',
-      hasDownload: true
+      status: 'check' as Status,
+      hasDownload: true,
     },
     {
       id: 4,
@@ -46,8 +47,8 @@ export default function TrailScreen() {
       title: 'Hydrafacial -30 Minutos',
       category: 'Regeneração',
       icon: 'auto-fix',
-      status: 'check',
-      hasDownload: true
+      status: 'check' as Status,
+      hasDownload: true,
     },
     {
       id: 5,
@@ -55,8 +56,8 @@ export default function TrailScreen() {
       title: 'Ellansé M',
       category: 'Manutenção',
       icon: 'cog',
-      status: 'close',
-      hasDownload: true
+      status: 'close' as Status,
+      hasDownload: true,
     },
     {
       id: 6,
@@ -64,8 +65,8 @@ export default function TrailScreen() {
       title: 'Acompanhamento',
       category: 'Checkups',
       icon: 'clipboard-pulse-outline',
-      status: 'check',
-      hasDownload: true
+      status: 'check' as Status,
+      hasDownload: true,
     },
     {
       id: 7,
@@ -73,9 +74,9 @@ export default function TrailScreen() {
       title: 'Acompanhamento',
       category: 'Checkups',
       icon: 'clipboard-pulse-outline',
-      status: 'check',
-      hasDownload: true
-    }
+      status: 'check' as Status,
+      hasDownload: true,
+    },
   ];
 
   const handleCardPress = (itemId: number) => {
@@ -84,10 +85,12 @@ export default function TrailScreen() {
 
   const downloadFile = () => {
     // Função para download do arquivo
-    console.log('Download arquivo');
+
+    const { log } = require('../utils/log');
+    log.info('Download arquivo');
   };
 
-  const renderStatusIcon = (status: string) => {
+  const renderStatusIcon = (status: Status) => {
     const iconColor = colors.textMuted;
     switch (status) {
       case 'calendar':
@@ -119,13 +122,18 @@ export default function TrailScreen() {
         </View>
 
         {/* Subtítulo */}
-        <Text style={styles.subtitle}>
-          Sua trilha no Equalize
-        </Text>
+        <Text style={styles.subtitle}>Sua trilha no Equalize</Text>
 
         {/* Texto principal */}
         <Text style={styles.mainText}>
-          A trilha Equalize orienta e informa você. Ali você identifica quais são os melhores tratamentos de acordo com a identidade da sua pele. Ao acessá-la você consegue saber a qualquer momento quais procedimentos você realizou, quando e o que foram os resultados alcançados. Dessa forma, é possível acompanhar evolutivamente as características da sua identidade ao longo do tempo e a ação dos tratamentos na prevenção, regeneração, manutenção e recuperação da saúde da sua pele e de características físicas anatômicas que interferem na sua aparência. A sua Trilha é uma forma segura para você organizar os cuidados com a sua pele - tanto em relação ao tempo quanto ao investimento necessário. Tudo na sua mão, ao seu alcance, com o seu conhecimento.
+          A trilha Equalize orienta e informa você. Ali você identifica quais são os melhores tratamentos de
+          acordo com a identidade da sua pele. Ao acessá-la você consegue saber a qualquer momento quais
+          procedimentos você realizou, quando e o que foram os resultados alcançados. Dessa forma, é possível
+          acompanhar evolutivamente as características da sua identidade ao longo do tempo e a ação dos
+          tratamentos na prevenção, regeneração, manutenção e recuperação da saúde da sua pele e de
+          características físicas anatômicas que interferem na sua aparência. A sua Trilha é uma forma segura
+          para você organizar os cuidados com a sua pele - tanto em relação ao tempo quanto ao investimento
+          necessário. Tudo na sua mão, ao seu alcance, com o seu conhecimento.
         </Text>
 
         {/* Trail Items */}
@@ -133,16 +141,17 @@ export default function TrailScreen() {
           {trailItems.map((item) => (
             <TouchableOpacity
               key={item.id}
-              style={[
-                styles.trailCard,
-                expandedCard === item.id && styles.trailCardExpanded
-              ]}
+              style={[styles.trailCard, expandedCard === item.id && styles.trailCardExpanded]}
               onPress={() => handleCardPress(item.id)}
             >
               <View style={styles.cardHeader}>
                 <View style={styles.cardLeft}>
                   <View style={styles.iconContainer}>
-                    <Icon name={item.icon} size={20} color={colors.textPrimary} />
+                    <Icon
+                      name={item.icon as React.ComponentProps<typeof Icon>['name']}
+                      size={20}
+                      color={colors.textPrimary}
+                    />
                   </View>
                   <View style={styles.cardInfo}>
                     <Text style={styles.cardDate}>{item.date}</Text>
@@ -150,11 +159,9 @@ export default function TrailScreen() {
                     <Text style={styles.cardCategory}>{item.category}</Text>
                   </View>
                 </View>
-                <View style={styles.statusIcon}>
-                  {renderStatusIcon(item.status)}
-                </View>
+                <View style={styles.statusIcon}>{renderStatusIcon(item.status)}</View>
               </View>
-              
+
               {expandedCard === item.id && item.hasDownload && (
                 <View style={styles.expandedContent}>
                   <Button
@@ -175,11 +182,31 @@ export default function TrailScreen() {
       <BottomNavbar
         items={[
           { key: 'home', label: 'Página Inicial', icon: 'home-outline', onPress: () => navigate('Main') },
-          { key: 'identity', label: 'Identidade', customIcon: 'identity', onPress: () => navigate('Account') },
+          {
+            key: 'identity',
+            label: 'Identidade',
+            customIcon: 'identity',
+            onPress: () => navigate('Account'),
+          },
           { key: 'care', label: 'Cuidados', icon: 'molecule', onPress: () => navigate('Care') },
-          { key: 'regen', label: 'Regeneração', icon: 'arrow-collapse-vertical', onPress: () => navigate('Next') },
-          { key: 'maint', label: 'Manutenção', icon: 'account-cog-outline', onPress: () => navigate('Maintenance') },
-          { key: 'checks', label: 'Checkups', icon: 'clipboard-pulse-outline', onPress: () => navigate('Checkups') },
+          {
+            key: 'regen',
+            label: 'Regeneração',
+            icon: 'arrow-collapse-vertical',
+            onPress: () => navigate('Regeneration'),
+          },
+          {
+            key: 'maint',
+            label: 'Manutenção',
+            icon: 'account-cog-outline',
+            onPress: () => navigate('Maintenance'),
+          },
+          {
+            key: 'checks',
+            label: 'Checkups',
+            icon: 'clipboard-pulse-outline',
+            onPress: () => navigate('Checkups'),
+          },
           { key: 'trail', label: 'Trilha', icon: 'map-marker-path', onPress: () => navigate('Trail') },
         ]}
       />

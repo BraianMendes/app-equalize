@@ -1,8 +1,10 @@
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+export type IconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+
 type Props = {
-  name: React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+  name: IconName;
   size?: number;
   color?: string;
   style?: object;

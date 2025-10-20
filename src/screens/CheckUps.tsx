@@ -28,23 +28,23 @@ export default function CheckUps() {
         </View>
 
         {/* Subtítulo */}
-        <Text style={styles.subtitle}>
-          Sua trilha de tratamentos a longo prazo
-        </Text>
+        <Text style={styles.subtitle}>Sua trilha de tratamentos a longo prazo</Text>
 
         {/* Texto principal */}
         <Text style={styles.mainText}>
-          Os checkups são agendamentos feitos para checar a evolução dos tratamentos, para exame físico da pele para checar surgimento de alguma lesão e dar continuidade a sua trilha de cuidados em casa e na clínica.
+          Os checkups são agendamentos feitos para checar a evolução dos tratamentos, para exame físico da
+          pele para checar surgimento de alguma lesão e dar continuidade a sua trilha de cuidados em casa e na
+          clínica.
         </Text>
 
         {/* Seção de procedimentos */}
         <Text style={styles.proceduresTitle}>Procedimentos / Ações</Text>
-        
+
         {/* Timeline */}
         <View style={styles.timelineContainer}>
           {/* Linha vertical da timeline */}
           <View style={styles.timelineLine} />
-          
+
           {/* Item 1 */}
           <View style={styles.timelineItem}>
             <View style={styles.timelineIconContainer}>
@@ -105,11 +105,31 @@ export default function CheckUps() {
       <BottomNavbar
         items={[
           { key: 'home', label: 'Página Inicial', icon: 'home-outline', onPress: () => navigate('Main') },
-          { key: 'identity', label: 'Identidade', customIcon: 'identity', onPress: () => navigate('Account') },
+          {
+            key: 'identity',
+            label: 'Identidade',
+            customIcon: 'identity',
+            onPress: () => navigate('Account'),
+          },
           { key: 'care', label: 'Cuidados', icon: 'molecule', onPress: () => navigate('Care') },
-          { key: 'regen', label: 'Regeneração', icon: 'arrow-collapse-vertical', onPress: () => navigate('Next') },
-          { key: 'maint', label: 'Manutenção', icon: 'account-cog-outline', onPress: () => navigate('Maintenance') },
-          { key: 'checks', label: 'Checkups', icon: 'clipboard-pulse-outline', onPress: () => navigate('Checkups') },
+          {
+            key: 'regen',
+            label: 'Regeneração',
+            icon: 'arrow-collapse-vertical',
+            onPress: () => navigate('Regeneration'),
+          },
+          {
+            key: 'maint',
+            label: 'Manutenção',
+            icon: 'account-cog-outline',
+            onPress: () => navigate('Maintenance'),
+          },
+          {
+            key: 'checks',
+            label: 'Checkups',
+            icon: 'clipboard-pulse-outline',
+            onPress: () => navigate('Checkups'),
+          },
           { key: 'trail', label: 'Trilha', icon: 'map-marker-path', onPress: () => navigate('Trail') },
         ]}
       />
@@ -118,9 +138,9 @@ export default function CheckUps() {
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: colors.background 
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
   },
   content: {
     padding: 20,
@@ -207,4 +227,3 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 });
-

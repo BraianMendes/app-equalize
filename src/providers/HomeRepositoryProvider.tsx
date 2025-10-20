@@ -9,7 +9,13 @@ export function useHomeRepository(): HomeRepository {
   return value;
 }
 
-export function HomeRepositoryProvider({ repo, children }: { repo: HomeRepository; children: React.ReactNode }) {
+export function HomeRepositoryProvider({
+  repo,
+  children,
+}: {
+  repo: HomeRepository;
+  children: React.ReactNode;
+}) {
   const value = useMemo(() => repo, [repo]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

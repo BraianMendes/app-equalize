@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, ViewProps } from 'react-native';
+import type { ViewProps } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { colors } from '../theme/colors';
 import { shadow } from '../theme/elevation';
 import { spacing } from '../theme/spacing';

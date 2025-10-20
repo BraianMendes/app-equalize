@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform, type TextStyle } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import { BrandGradientTitle } from '../design-system/Typography';
 import { PrimaryButton } from '../design-system/Buttons';
@@ -8,6 +8,9 @@ import { colors } from '../theme/colors';
 type Props = {
   onEnter: () => void;
 };
+
+const titleFontWeight: TextStyle['fontWeight'] =
+  Platform.select<TextStyle['fontWeight']>({ ios: '600', android: '700', default: '700' }) ?? '700';
 
 export default function LoginScreen({ onEnter }: Props) {
   const [email, setEmail] = React.useState('');
@@ -75,7 +78,7 @@ const styles = StyleSheet.create({
   },
   equalize: {
     fontSize: 48,
-    fontWeight: Platform.select({ ios: '600', android: '700', default: '700' }) as any,
+    fontWeight: titleFontWeight,
     textAlign: 'center',
     marginTop: 6,
     letterSpacing: 8,

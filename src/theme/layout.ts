@@ -5,5 +5,9 @@ export const layout = {
   floatingCardRadius: 18,
   floatingHorizontal: 16,
   carouselSeparator: 12,
-  carouselItemWidth: 180,
+  carouselItemWidth: 160,
+  resultsThumbWidth: 160,
+  resultsThumbHeight: 213,
+  resultsSpacerOffset: 130,
+  heroHeight: 220,
 } as const;

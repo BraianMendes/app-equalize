@@ -28,23 +28,28 @@ export default function RegenerationScreen() {
         </View>
 
         {/* Subtítulo */}
-        <Text style={styles.subtitle}>
-          Tratamentos para a recuperação da vitalidade da sua pele
-        </Text>
+        <Text style={styles.subtitle}>Tratamentos para a recuperação da vitalidade da sua pele</Text>
 
         {/* Texto principal */}
         <Text style={styles.mainText}>
-          Os tratamentos dermatológicos regenerativos representam uma revolução no cuidado da pele, focando não apenas na estética, mas na saúde como um todo. Eles visam recuperar algo que você perdeu com o tempo para restaurar a estruturação de base que determina o contorno facial bem como a qualidade da pele. Isso vai depender do diagnóstico. Com base na funcionalidade da sua pele criamos um plano de tratamentos regenerativos para restaurar os tecidos que sustentam a pele. Além disso, focamos também em devolver a estrutura e a firmeza da pele - que vão diminuindo com o tempo e com o acúmulo de danos externos que sofremos, como poluição e radiação UV. Depois disso traçamos a trilha de manutenção dos resultados.
+          Os tratamentos dermatológicos regenerativos representam uma revolução no cuidado da pele, focando
+          não apenas na estética, mas na saúde como um todo. Eles visam recuperar algo que você perdeu com o
+          tempo para restaurar a estruturação de base que determina o contorno facial bem como a qualidade da
+          pele. Isso vai depender do diagnóstico. Com base na funcionalidade da sua pele criamos um plano de
+          tratamentos regenerativos para restaurar os tecidos que sustentam a pele. Além disso, focamos também
+          em devolver a estrutura e a firmeza da pele - que vão diminuindo com o tempo e com o acúmulo de
+          danos externos que sofremos, como poluição e radiação UV. Depois disso traçamos a trilha de
+          manutenção dos resultados.
         </Text>
 
         {/* Seção de procedimentos */}
         <Text style={styles.proceduresTitle}>Procedimentos / Ações</Text>
-        
+
         {/* Timeline */}
         <View style={styles.timelineContainer}>
           {/* Linha vertical da timeline */}
           <View style={styles.timelineLine} />
-          
+
           {/* Item 1 */}
           <View style={styles.timelineItem}>
             <View style={styles.timelineIconContainer}>
@@ -116,11 +121,31 @@ export default function RegenerationScreen() {
       <BottomNavbar
         items={[
           { key: 'home', label: 'Página Inicial', icon: 'home-outline', onPress: () => navigate('Main') },
-          { key: 'identity', label: 'Identidade', customIcon: 'identity', onPress: () => navigate('Account') },
+          {
+            key: 'identity',
+            label: 'Identidade',
+            customIcon: 'identity',
+            onPress: () => navigate('Account'),
+          },
           { key: 'care', label: 'Cuidados', icon: 'molecule', onPress: () => navigate('Care') },
-          { key: 'regen', label: 'Regeneração', icon: 'arrow-collapse-vertical', onPress: () => navigate('Next') },
-          { key: 'maint', label: 'Manutenção', icon: 'account-cog-outline', onPress: () => navigate('Maintenance') },
-          { key: 'checks', label: 'Checkups', icon: 'clipboard-pulse-outline', onPress: () => navigate('Checkups') },
+          {
+            key: 'regen',
+            label: 'Regeneração',
+            icon: 'arrow-collapse-vertical',
+            onPress: () => navigate('Regeneration'),
+          },
+          {
+            key: 'maint',
+            label: 'Manutenção',
+            icon: 'account-cog-outline',
+            onPress: () => navigate('Maintenance'),
+          },
+          {
+            key: 'checks',
+            label: 'Checkups',
+            icon: 'clipboard-pulse-outline',
+            onPress: () => navigate('Checkups'),
+          },
           { key: 'trail', label: 'Trilha', icon: 'map-marker-path', onPress: () => navigate('Trail') },
         ]}
       />

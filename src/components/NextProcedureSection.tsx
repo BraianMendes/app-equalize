@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, LayoutChangeEvent, ViewProps } from 'react-native';
+import type { LayoutChangeEvent, ViewProps } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { colors } from '../theme/colors';
 import { RoundedCard, Divider } from './Card';
@@ -17,51 +18,53 @@ type Props = ViewProps & {
   customLayout?: boolean;
 };
 
-export default function NextProcedureSection({ 
-  title = 'Próximo procedimento:', 
-  dateLabel = '—', 
-  name = '', 
-  onMeasured, 
-  style, 
+export default function NextProcedureSection({
+  title = 'Próximo procedimento:',
+  dateLabel = '—',
+  name = '',
+  onMeasured,
+  style,
   hideIcon = false,
   hideMoreInfo = false,
   customLayout = false,
-  ...rest 
+  ...rest
 }: Props) {
   return (
     <View style={[styles.wrapper, style]} {...rest}>
       <RoundedCard
-            style={styles.card}
+        style={styles.card}
         onLayout={(e: LayoutChangeEvent) => onMeasured?.(e.nativeEvent.layout.height)}
         accessibilityRole="summary"
         accessibilityLabel="Próximo procedimento"
       >
-  {customLayout ? (
-    <View style={styles.customLayoutContainer}>
-      <View style={styles.customLayoutHeader}>
-        <Text style={styles.customHeaderTitle}>{title}</Text>
-        <Text style={styles.customHeaderDate}>{dateLabel}</Text>
-      </View>
-      <Text style={styles.customSubtitle}>{name}</Text>
-    </View>
-  ) : (
-    <>
-      <SectionHeader title={title} style={styles.sectionHeader} />
-      <ListRow 
-        left={hideIcon ? undefined : <Icon name="calendar-month-outline" size={28} />} 
-        title={dateLabel} 
-        subtitle={name} 
-        right={hideMoreInfo ? undefined : (
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ color: colors.textMuted, fontSize: 16 }}>Mais informações</Text>
-            <Text style={{ color: colors.textMuted, marginLeft: 4, fontSize: 18 }}>›</Text>
+        {customLayout ? (
+          <View style={styles.customLayoutContainer}>
+            <View style={styles.customLayoutHeader}>
+              <Text style={styles.customHeaderTitle}>{title}</Text>
+              <Text style={styles.customHeaderDate}>{dateLabel}</Text>
+            </View>
+            <Text style={styles.customSubtitle}>{name}</Text>
           </View>
+        ) : (
+          <>
+            <SectionHeader title={title} style={styles.sectionHeader} />
+            <ListRow
+              left={hideIcon ? undefined : <Icon name="calendar-month-outline" size={28} />}
+              title={dateLabel}
+              subtitle={name}
+              right={
+                hideMoreInfo ? undefined : (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ color: colors.textMuted, fontSize: 16 }}>Mais informações</Text>
+                    <Text style={{ color: colors.textMuted, marginLeft: 4, fontSize: 18 }}>›</Text>
+                  </View>
+                )
+              }
+            />
+          </>
         )}
-      />
-    </>
-  )}
       </RoundedCard>
-      
+
       {/* Linha divisória branca no container do background translúcido */}
       <View style={styles.dividerContainer}>
         <Divider style={styles.whiteDivider} />
@@ -72,23 +75,23 @@ export default function NextProcedureSection({
 
 const styles = StyleSheet.create({
   // wrapper sem padding horizontal para que o cartão interno possa preencher até as laterais
-  wrapper: { 
+  wrapper: {
     paddingHorizontal: 0,
     position: 'relative', // para permitir posicionamento absoluto da linha
   },
   card: {
-  // tornar o cartão mais escuro e fosco
-  backgroundColor: 'rgba(0,0,0,0.50)',
-  borderRadius: 0,
+    // tornar o cartão mais escuro e fosco
+    backgroundColor: 'rgba(0,0,0,0.50)',
+    borderRadius: 0,
     // borda visível, suave
     borderWidth: 1,
-  // borda escura sutil
-  borderColor: 'rgba(0,0,0,0.35)',
+    // borda escura sutil
+    borderColor: 'rgba(0,0,0,0.35)',
     overflow: 'hidden',
-  paddingTop: 8, // espaço interno adicionado equivalente ao gap removido
-  paddingBottom: 8, // valor original
-  // deixar um pequeno padding interno nas laterais para o conteúdo não encostar na borda
-  paddingHorizontal: 14,
+    paddingTop: 8, // espaço interno adicionado equivalente ao gap removido
+    paddingBottom: 8, // valor original
+    // deixar um pequeno padding interno nas laterais para o conteúdo não encostar na borda
+    paddingHorizontal: 14,
     // sombra para dar profundidade ao cartão
     shadowColor: '#000',
     shadowOpacity: 0.32,

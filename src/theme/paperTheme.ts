@@ -1,4 +1,5 @@
-import { MD3LightTheme, MD3Theme, configureFonts } from 'react-native-paper';
+import type { MD3Theme } from 'react-native-paper';
+import { MD3LightTheme, configureFonts } from 'react-native-paper';
 import { colors } from './colors';
 import { typography } from './typography';
 

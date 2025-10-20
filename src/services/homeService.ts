@@ -27,7 +27,8 @@ export async function getHomeData(): Promise<{
       {
         title: 'Chegou nova onda de calor, como proceder',
         subtitle: 'Confira aqui 10 dicas de cuidados com seus procedimentos',
-        imageUrl: 'https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1200&q=60&auto=format&fit=crop',
+        imageUrl:
+          'https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1200&q=60&auto=format&fit=crop',
       },
     ],
     results: Array.from({ length: 6 }).map(() => ({

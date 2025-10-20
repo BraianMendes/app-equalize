@@ -1,59 +1,83 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, PanResponder, GestureResponderEvent, PanResponderGestureState } from 'react-native';
+import type { GestureResponderEvent, PanResponderGestureState } from 'react-native';
+import { View, StyleSheet, ScrollView, PanResponder } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from 'react-native-paper';
 import { colors } from '../theme/colors';
 import MessagesSection from '../components/MessagesSection';
-import { useHomeViewModel } from '../viewmodels/useHomeViewModel';
+import { useMessagesViewModel } from '../viewmodels/useMessagesViewModel';
 import AppHeader from '../components/AppHeader';
 import BottomNavbar from '../components/BottomNavbar';
 import { useRouter } from '../app/router/RouterProvider';
+import { strings } from '../app/strings';
 
 export default function MessagesScreen() {
-  const { data } = useHomeViewModel();
+  const { messages, unreadCount } = useMessagesViewModel();
   const { goBack, canGoBack, navigate } = useRouter();
 
   // Edge-swipe back (da esquerda para direita)
-  const panResponder = React.useMemo(() =>
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (_: GestureResponderEvent, s: PanResponderGestureState) => {
-        // gesto lateral com início na borda esquerda e movimento horizontal > vertical
-        const edgeStart = s.moveX <= 24; // 24px da borda
-        const horizontal = Math.abs(s.dx) > Math.abs(s.dy) && s.dx > 30;
-        return edgeStart && horizontal;
-      },
-      onPanResponderRelease: () => {
-        if (canGoBack) goBack();
-      },
-    }),
-  [canGoBack, goBack]);
+  const panResponder = React.useMemo(
+    () =>
+      PanResponder.create({
+        onMoveShouldSetPanResponder: (_: GestureResponderEvent, s: PanResponderGestureState) => {
+          // gesto lateral com início na borda esquerda e movimento horizontal > vertical
+          const edgeStart = s.moveX <= 24; // 24px da borda
+          const horizontal = Math.abs(s.dx) > Math.abs(s.dy) && s.dx > 30;
+          return edgeStart && horizontal;
+        },
+        onPanResponderRelease: () => {
+          if (canGoBack) goBack();
+        },
+      }),
+    [canGoBack, goBack],
+  );
   return (
     <SafeAreaView style={styles.container} {...panResponder.panHandlers}>
       <AppHeader
-        greeting="Olá,"
-        name="Usuário!"
-        unreadCount={data?.unreadCount}
+        greeting={strings.hello}
+        name={strings.userName}
+        unreadCount={unreadCount}
         onPressMessages={() => {}}
       />
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.titleSection}>
-          <Text style={styles.sectionTitle}>Mensagens</Text>
+          <Text style={styles.sectionTitle}>{strings.messages}</Text>
         </View>
-        {data?.messages?.length ? (
-          <MessagesSection messages={data.messages} />
+        {messages?.length ? (
+          <MessagesSection messages={messages} />
         ) : (
-          <Text style={styles.empty}>Sem mensagens</Text>
+          <Text style={styles.empty}>{strings.empty}</Text>
         )}
       </ScrollView>
       <BottomNavbar
         items={[
-          { key: 'home', label: 'Página Inicial', icon: 'home-outline', onPress: () => navigate('Main') },
-          { key: 'identity', label: 'Identidade', customIcon: 'identity', onPress: () => navigate('Account') },
-          { key: 'care', label: 'Cuidados', icon: 'molecule', onPress: () => navigate('Care') },
-          { key: 'regen', label: 'Regeneração', icon: 'arrow-collapse-vertical' },
-          { key: 'maint', label: 'Manutenção', icon: 'account-cog-outline', onPress: () => navigate('Maintenance') },
-          { key: 'checks', label: 'Checkups', icon: 'clipboard-pulse-outline', onPress: () => navigate('Checkups') },
-          { key: 'trail', label: 'Trilha', icon: 'map-marker-path', onPress: () => navigate('Trail') },
+          { key: 'home', label: strings.home, icon: 'home-outline', onPress: () => navigate('Main') },
+          {
+            key: 'identity',
+            label: strings.identity,
+            customIcon: 'identity',
+            onPress: () => navigate('Account'),
+          },
+          { key: 'care', label: strings.care, icon: 'molecule', onPress: () => navigate('Care') },
+          {
+            key: 'regen',
+            label: strings.regeneration,
+            icon: 'arrow-collapse-vertical',
+            onPress: () => navigate('Regeneration'),
+          },
+          {
+            key: 'maint',
+            label: strings.maintenance,
+            icon: 'account-cog-outline',
+            onPress: () => navigate('Maintenance'),
+          },
+          {
+            key: 'checks',
+            label: strings.checkups,
+            icon: 'clipboard-pulse-outline',
+            onPress: () => navigate('Checkups'),
+          },
+          { key: 'trail', label: strings.trail, icon: 'map-marker-path', onPress: () => navigate('Trail') },
         ]}
       />
     </SafeAreaView>

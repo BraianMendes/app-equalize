@@ -1,4 +1,15 @@
-export type RouteName = 'Login' | 'Main' | 'Next' | 'Messages' | 'Account' | 'Care' | 'Checkups' | 'Maintenance' | 'Trail' | 'News' | 'Results';
+export type RouteName =
+  | 'Login'
+  | 'Main'
+  | 'Regeneration'
+  | 'Messages'
+  | 'Account'
+  | 'Care'
+  | 'Checkups'
+  | 'Maintenance'
+  | 'Trail'
+  | 'News'
+  | 'Results';
 
 export type Navigate = (to: RouteName) => void;
 export type GoBack = () => void;

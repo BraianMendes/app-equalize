@@ -9,54 +9,77 @@ export class MockHomeRepository implements HomeRepository {
         {
           title: 'Chegou nova onda de calor, como proceder',
           subtitle: 'Confira aqui 10 dicas de cuidados com seus procedimentos',
-          imageUrl: 'https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1200&q=60&auto=format&fit=crop',
+          imageUrl:
+            'https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1200&q=60&auto=format&fit=crop',
         },
       ],
       results: [
-        { imageUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop', dateLabel: '21 de maio de 2025' },
-        { imageUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop', dateLabel: '10 de setembro de 2024' },
-        { imageUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop', dateLabel: '5 de março de 2024' },
-        { imageUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop', dateLabel: '8 de janeiro de 2024' },
-        { imageUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop', dateLabel: '16 de novembro de 2023' },
+        {
+          imageUrl:
+            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
+          dateLabel: '21 de maio de 2025',
+        },
+        {
+          imageUrl:
+            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
+          dateLabel: '10 de setembro de 2024',
+        },
+        {
+          imageUrl:
+            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
+          dateLabel: '5 de março de 2024',
+        },
+        {
+          imageUrl:
+            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
+          dateLabel: '8 de janeiro de 2024',
+        },
+        {
+          imageUrl:
+            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
+          dateLabel: '16 de novembro de 2023',
+        },
       ],
       unreadCount: 3,
-        messages: [
-          {
-            id: '1',
-            title: 'Chegou nova onda de calor, como proceder',
-            preview: 'As altas temperaturas registradas neste verão têm causado impactos diretos na saúde da pele...',
-            dateLabel: '01 de agosto de 2025',
-            read: false,
-          },
-          {
-            id: '2',
-            title: 'Monica, seu procedimento é semana que vem!',
-            preview: 'A primavera é uma estação de renovação, e sua pele merece acompanhar esse ciclo...',
-            dateLabel: '01 de agosto de 2025',
-            read: false,
-          },
-          {
-            id: '3',
-            title: 'Skinboosters com ácido hialurônico são destaque',
-            preview: 'Uma das grandes inovações deste ano são os skinboosters com ácido hialurônico de liberação prolongada...',
-            dateLabel: '01 de agosto de 2025',
-            read: false,
-          },
-          {
-            id: '4',
-            title: 'Autoestima em alta: renove sua pele',
-            preview: 'Em dias muito quentes, a pele precisa de cuidados especiais para se manter saudável...',
-            dateLabel: '01 de agosto de 2025',
-            read: true,
-          },
-          {
-            id: '5',
-            title: 'Chegou nova onda de calor, como proceder',
-            preview: 'Em dias muito quentes, a pele precisa de cuidados especiais para se manter saudável...',
-            dateLabel: '01 de agosto de 2025',
-            read: true,
-          },
-        ],
+      messages: [
+        {
+          id: '1',
+          title: 'Chegou nova onda de calor, como proceder',
+          preview:
+            'As altas temperaturas registradas neste verão têm causado impactos diretos na saúde da pele...',
+          dateLabel: '01 de agosto de 2025',
+          read: false,
+        },
+        {
+          id: '2',
+          title: 'Monica, seu procedimento é semana que vem!',
+          preview: 'A primavera é uma estação de renovação, e sua pele merece acompanhar esse ciclo...',
+          dateLabel: '01 de agosto de 2025',
+          read: false,
+        },
+        {
+          id: '3',
+          title: 'Skinboosters com ácido hialurônico são destaque',
+          preview:
+            'Uma das grandes inovações deste ano são os skinboosters com ácido hialurônico de liberação prolongada...',
+          dateLabel: '01 de agosto de 2025',
+          read: false,
+        },
+        {
+          id: '4',
+          title: 'Autoestima em alta: renove sua pele',
+          preview: 'Em dias muito quentes, a pele precisa de cuidados especiais para se manter saudável...',
+          dateLabel: '01 de agosto de 2025',
+          read: true,
+        },
+        {
+          id: '5',
+          title: 'Chegou nova onda de calor, como proceder',
+          preview: 'Em dias muito quentes, a pele precisa de cuidados especiais para se manter saudável...',
+          dateLabel: '01 de agosto de 2025',
+          read: true,
+        },
+      ],
       care: [
         { dateLabel: '08 de agosto de 2025', title: 'Receita manipulados', status: 'scheduled' },
         { dateLabel: '08 de agosto de 2025', title: 'Receita manipulados', status: 'cancelled' },

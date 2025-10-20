@@ -29,23 +29,34 @@ export default function MaintenanceScreen() {
         </View>
 
         {/* Subtítulo */}
-        <Text style={styles.subtitle}>
-          Tratamentos para a manutenção da vitalidade da sua pele
-        </Text>
+        <Text style={styles.subtitle}>Tratamentos para a manutenção da vitalidade da sua pele</Text>
 
         {/* Texto principal */}
         <Text style={styles.mainText}>
-          Os tratamentos de manutenção são procedimentos e cuidados contínuos que ajudam a preservar a saúde, o vigor e a uniformidade da pele ao longo do tempo. Eles são indicados para prevenir os sinais de flacidez, contornar a obesidade ou ressecamento, minimizar manchas e manter a pele sempre bonita e bem cuidada. São tratamentos indicados para prolongar os resultados já alcançados e não deixar que os sinais que antes incomodavam retornem. Principais Tratamentos de Manutenção: 1. Limpeza de Pele Profunda - Remove impurezas, cravos e células mortas, prevenindo acne e melhora a absorção de ativos. 2. Peelings Superficiais - Estimulam a renovação celular, clareiam manchas leves e melhoram a textura da pele. 3. Laser e Luz Pulsada - Tratam manchas, vasinhos, estimulam colágeno e ajudam no controle da obesidade. 4. Skinbooster e Bioestimuladores - Hidratação profunda e estímulo de colágeno para melhorar a firmeza e viço da pele. 5. Microagulhamento - Estimula colágeno, melhora cicatrizes e textura da pele. 6. Toxina Botulínica (Botox®) Preventivo - Mantém a pele lisa e previne rugas profundas. 7. Preenchimentos Leves - Para reposição sutil de volume e contorno facial. Além dos procedimentos dermatológicos, o uso diário de protetor solar, antioxidantes, hidratantes adequados e uma alimentação equilibrada são essenciais para manter os resultados.
+          Os tratamentos de manutenção são procedimentos e cuidados contínuos que ajudam a preservar a saúde,
+          o vigor e a uniformidade da pele ao longo do tempo. Eles são indicados para prevenir os sinais de
+          flacidez, contornar a obesidade ou ressecamento, minimizar manchas e manter a pele sempre bonita e
+          bem cuidada. São tratamentos indicados para prolongar os resultados já alcançados e não deixar que
+          os sinais que antes incomodavam retornem. Principais Tratamentos de Manutenção: 1. Limpeza de Pele
+          Profunda - Remove impurezas, cravos e células mortas, prevenindo acne e melhora a absorção de
+          ativos. 2. Peelings Superficiais - Estimulam a renovação celular, clareiam manchas leves e melhoram
+          a textura da pele. 3. Laser e Luz Pulsada - Tratam manchas, vasinhos, estimulam colágeno e ajudam no
+          controle da obesidade. 4. Skinbooster e Bioestimuladores - Hidratação profunda e estímulo de
+          colágeno para melhorar a firmeza e viço da pele. 5. Microagulhamento - Estimula colágeno, melhora
+          cicatrizes e textura da pele. 6. Toxina Botulínica (Botox®) Preventivo - Mantém a pele lisa e
+          previne rugas profundas. 7. Preenchimentos Leves - Para reposição sutil de volume e contorno facial.
+          Além dos procedimentos dermatológicos, o uso diário de protetor solar, antioxidantes, hidratantes
+          adequados e uma alimentação equilibrada são essenciais para manter os resultados.
         </Text>
 
         {/* Seção de procedimentos */}
         <Text style={styles.proceduresTitle}>Procedimentos / Ações</Text>
-        
+
         {/* Timeline */}
         <View style={styles.timelineContainer}>
           {/* Linha vertical da timeline */}
           <View style={styles.timelineLine} />
-          
+
           {/* Item 1 */}
           <View style={styles.timelineItem}>
             <View style={styles.timelineIconContainer}>
@@ -117,11 +128,31 @@ export default function MaintenanceScreen() {
       <BottomNavbar
         items={[
           { key: 'home', label: 'Página Inicial', icon: 'home-outline', onPress: () => navigate('Main') },
-          { key: 'identity', label: 'Identidade', customIcon: 'identity', onPress: () => navigate('Account') },
+          {
+            key: 'identity',
+            label: 'Identidade',
+            customIcon: 'identity',
+            onPress: () => navigate('Account'),
+          },
           { key: 'care', label: 'Cuidados', icon: 'molecule', onPress: () => navigate('Care') },
-          { key: 'regen', label: 'Regeneração', icon: 'arrow-collapse-vertical', onPress: () => navigate('Next') },
-          { key: 'maint', label: 'Manutenção', icon: 'account-cog-outline', onPress: () => navigate('Maintenance') },
-          { key: 'checks', label: 'Checkups', icon: 'clipboard-pulse-outline', onPress: () => navigate('Checkups') },
+          {
+            key: 'regen',
+            label: 'Regeneração',
+            icon: 'arrow-collapse-vertical',
+            onPress: () => navigate('Regeneration'),
+          },
+          {
+            key: 'maint',
+            label: 'Manutenção',
+            icon: 'account-cog-outline',
+            onPress: () => navigate('Maintenance'),
+          },
+          {
+            key: 'checks',
+            label: 'Checkups',
+            icon: 'clipboard-pulse-outline',
+            onPress: () => navigate('Checkups'),
+          },
           { key: 'trail', label: 'Trilha', icon: 'map-marker-path', onPress: () => navigate('Trail') },
         ]}
       />

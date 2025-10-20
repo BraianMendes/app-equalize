@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Image, TouchableOpacity, Modal, Dimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { colors } from '../theme/colors';
 import BottomNavbar from '../components/BottomNavbar';
 import { useRouter } from '../app/router/RouterProvider';
@@ -8,9 +8,12 @@ import NextProcedureSection from '../components/NextProcedureSection';
 import { layout } from '../theme/layout';
 import { easeNextLayout } from '../utils/animations';
 import Icon from '../design-system/Icon';
+import { ModalCard } from '../components/ModalCard';
+import { useResultsViewModel } from '../viewmodels/useResultsViewModel';
 
 export default function ResultsScreen() {
   const { navigate, goBack } = useRouter();
+  const { results } = useResultsViewModel();
   const [headerH, setHeaderH] = React.useState(0);
   const [floatH, setFloatH] = React.useState(0);
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -19,22 +22,16 @@ export default function ResultsScreen() {
   const spacerHeight = headerH + floatH + 16;
   const floatTop = headerH - 6;
 
-  const images = [
-    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop'
-  ];
+  const images = results?.length
+    ? results.map((r) => r.imageUrl)
+    : ['https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=60&auto=format&fit=crop'];
 
   const openModal = (index: number) => {
     setSelectedImageIndex(index);
     setModalVisible(true);
   };
 
-  const closeModal = () => {
-    setModalVisible(false);
-  };
+  const closeModal = () => setModalVisible(false);
 
   return (
     <View style={styles.container}>
@@ -43,7 +40,10 @@ export default function ResultsScreen() {
         name="Usuário!"
         onPressMessages={() => navigate('Messages')}
         onPressProfile={() => navigate('Account')}
-        onLayout={(e) => { easeNextLayout(); setHeaderH(e.nativeEvent.layout.height); }}
+        onLayout={(e) => {
+          easeNextLayout();
+          setHeaderH(e.nativeEvent.layout.height);
+        }}
         includeSpacer={true}
       />
 
@@ -66,63 +66,62 @@ export default function ResultsScreen() {
 
       <ScrollView contentContainerStyle={[styles.scroll, { paddingTop: 0 }]}>
         <View style={{ height: Math.max(0, spacerHeight - 130) }} />
-        
+
         {/* Galeria de Resultados */}
         <View style={styles.galleryContainer}>
           {images.map((uri, index) => (
-            <TouchableOpacity 
-              key={index} 
-              style={styles.imageContainer}
-              onPress={() => openModal(index)}
-            >
+            <TouchableOpacity key={index} style={styles.imageContainer} onPress={() => openModal(index)}>
               <View style={styles.imageFrame}>
-                <Image 
-                  source={{ uri }}
-                  style={styles.resultImage}
-                  resizeMode="cover"
-                />
+                <Image source={{ uri }} style={styles.resultImage} resizeMode="cover" />
               </View>
             </TouchableOpacity>
           ))}
         </View>
-        
       </ScrollView>
 
-      {/* Modal de Imagem */}
-      <Modal
-        animationType="fade"
-        transparent={true}
+      <ModalCard
         visible={modalVisible}
-        onRequestClose={closeModal}
-      >
-        <View style={styles.modalOverlay}>
-          <TouchableOpacity 
-            style={styles.modalCloseArea} 
-            onPress={closeModal}
-            activeOpacity={1}
-          >
-            <View style={styles.modalImageContainer}>
-              <Image 
-                source={{ uri: images[selectedImageIndex] }}
-                style={styles.modalImage}
-                resizeMode="contain"
-              />
-              <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-                <Icon name="close" size={24} color="#FFFFFF" />
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </Modal>
+        title="Resultado"
+        onClose={closeModal}
+        content={
+          <View style={styles.modalImageContainer}>
+            <Image
+              source={{ uri: images[selectedImageIndex] }}
+              style={styles.modalImage}
+              resizeMode="contain"
+            />
+          </View>
+        }
+      />
 
       <BottomNavbar
         items={[
           { key: 'home', label: 'Página Inicial', icon: 'home-outline', onPress: () => navigate('Main') },
-          { key: 'identity', label: 'Identidade', customIcon: 'identity', onPress: () => navigate('Account') },
+          {
+            key: 'identity',
+            label: 'Identidade',
+            customIcon: 'identity',
+            onPress: () => navigate('Account'),
+          },
           { key: 'care', label: 'Cuidados', icon: 'molecule', onPress: () => navigate('Care') },
-          { key: 'regen', label: 'Regeneração', icon: 'arrow-collapse-vertical', onPress: () => navigate('Next') },
-          { key: 'maint', label: 'Manutenção', icon: 'account-cog-outline', onPress: () => navigate('Maintenance') },
-          { key: 'checks', label: 'Checkups', icon: 'clipboard-pulse-outline', onPress: () => navigate('Checkups') },
+          {
+            key: 'regen',
+            label: 'Regeneração',
+            icon: 'arrow-collapse-vertical',
+            onPress: () => navigate('Regeneration'),
+          },
+          {
+            key: 'maint',
+            label: 'Manutenção',
+            icon: 'account-cog-outline',
+            onPress: () => navigate('Maintenance'),
+          },
+          {
+            key: 'checks',
+            label: 'Checkups',
+            icon: 'clipboard-pulse-outline',
+            onPress: () => navigate('Checkups'),
+          },
           { key: 'trail', label: 'Trilha', icon: 'map-marker-path', onPress: () => navigate('Trail') },
         ]}
       />
@@ -152,9 +151,9 @@ const styles = StyleSheet.create({
     elevation: 1,
     zIndex: 20,
   },
-  scroll: { 
-    paddingHorizontal: layout.screenPadding, 
-    paddingBottom: 120 
+  scroll: {
+    paddingHorizontal: layout.screenPadding,
+    paddingBottom: 120,
   },
   galleryContainer: {
     gap: 16,
@@ -181,16 +180,10 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.85)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    // unused after switching to ModalCard
   },
   modalCloseArea: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    // unused after switching to ModalCard
   },
   modalImageContainer: {
     position: 'relative',
@@ -205,12 +198,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   closeButton: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: 20,
-    padding: 8,
-    zIndex: 1,
+    // unused after switching to ModalCard
   },
 });

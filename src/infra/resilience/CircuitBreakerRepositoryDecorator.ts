@@ -1,54 +1,85 @@
 import { CircuitOpenError } from './errors';
 import type { HomeData, HomeRepository } from '../../domain/home/types';
 
-type State = 'CLOSED' | 'OPEN' | 'HALF_OPEN';
+// State pattern for Circuit Breaker
+interface BreakerState {
+  canPassThrough(ctx: CircuitBreakerRepositoryDecorator): boolean;
+  onSuccess(ctx: CircuitBreakerRepositoryDecorator): void;
+  onFailure(ctx: CircuitBreakerRepositoryDecorator): void;
+  name: 'CLOSED' | 'OPEN' | 'HALF_OPEN';
+}
 
-export class CircuitBreakerRepositoryDecorator implements HomeRepository {
-  private state: State = 'CLOSED';
-  private failureCount = 0;
-  private nextTry = 0;
-
-  constructor(
-    private readonly inner: HomeRepository,
-    private readonly failureThreshold: number = 3,
-    private readonly cooldownMs: number = 3000
-  ) {}
-
-  private canPassThrough() {
-    const now = Date.now();
-    if (this.state === 'OPEN') {
-      if (now >= this.nextTry) {
-        this.state = 'HALF_OPEN';
-        return true; // allow one trial
-      }
-      return false;
-    }
+class ClosedState implements BreakerState {
+  name: 'CLOSED' = 'CLOSED';
+  canPassThrough(): boolean {
     return true;
   }
-
-  private onSuccess() {
-    this.failureCount = 0;
-    this.state = 'CLOSED';
+  onSuccess(ctx: CircuitBreakerRepositoryDecorator) {
+    ctx.failureCount = 0;
   }
-
-  private onFailure() {
-    this.failureCount += 1;
-    if (this.failureCount >= this.failureThreshold) {
-      this.state = 'OPEN';
-      this.nextTry = Date.now() + this.cooldownMs;
+  onFailure(ctx: CircuitBreakerRepositoryDecorator) {
+    ctx.failureCount += 1;
+    if (ctx.failureCount >= ctx.failureThreshold) {
+      ctx.transitionTo(new OpenState());
+      ctx.nextTry = Date.now() + ctx.cooldownMs;
     }
+  }
+}
+
+class OpenState implements BreakerState {
+  name: 'OPEN' = 'OPEN';
+  canPassThrough(ctx: CircuitBreakerRepositoryDecorator): boolean {
+    const now = Date.now();
+    if (now >= ctx.nextTry) {
+      ctx.transitionTo(new HalfOpenState());
+      return true; // allow one trial
+    }
+    return false;
+  }
+  onSuccess(_ctx: CircuitBreakerRepositoryDecorator) {}
+  onFailure(_ctx: CircuitBreakerRepositoryDecorator) {}
+}
+
+class HalfOpenState implements BreakerState {
+  name: 'HALF_OPEN' = 'HALF_OPEN';
+  canPassThrough(): boolean {
+    return true; // single trial is allowed; enforcement via transition logic
+  }
+  onSuccess(ctx: CircuitBreakerRepositoryDecorator) {
+    ctx.failureCount = 0;
+    ctx.transitionTo(new ClosedState());
+  }
+  onFailure(ctx: CircuitBreakerRepositoryDecorator) {
+    ctx.transitionTo(new OpenState());
+    ctx.nextTry = Date.now() + ctx.cooldownMs;
+  }
+}
+
+export class CircuitBreakerRepositoryDecorator implements HomeRepository {
+  state: BreakerState = new ClosedState();
+  failureCount = 0;
+  nextTry = 0;
+
+  constructor(
+    public readonly inner: HomeRepository,
+    public readonly failureThreshold: number = 3,
+    public readonly cooldownMs: number = 3000,
+  ) {}
+
+  transitionTo(next: BreakerState) {
+    this.state = next;
   }
 
   async getHomeData(): Promise<HomeData> {
-    if (!this.canPassThrough()) {
-  throw new CircuitOpenError();
+    if (!this.state.canPassThrough(this)) {
+      throw new CircuitOpenError();
     }
     try {
       const res = await this.inner.getHomeData();
-      this.onSuccess();
+      this.state.onSuccess(this);
       return res;
     } catch (e) {
-      this.onFailure();
+      this.state.onFailure(this);
       throw e;
     }
   }

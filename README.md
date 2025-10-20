@@ -103,6 +103,7 @@ npx tsc --noEmit
 ## Use case contract example
 
 `src/application/usecases/GetHomeData.ts`
+
 - Input: none (the view model triggers it for the Home screen)
 - Output: `{ header, nextProcedure, sections, messages }` (domain-shaped data)
 - Errors: surfaced as typed errors; infra layer retries/fallbacks before propagating.

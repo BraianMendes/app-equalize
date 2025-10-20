@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Image, StyleSheet, ViewProps, TouchableOpacity } from 'react-native';
+import type { ViewProps } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { colors } from '../theme/colors';
 
@@ -22,7 +23,7 @@ export default function ResultCard({ uri, dateLabel, style, onPress, ...rest }: 
       </TouchableOpacity>
     );
   }
-  
+
   return (
     <View style={style} {...rest}>
       <View style={styles.imageWrapper}>
@@ -42,12 +43,12 @@ const styles = StyleSheet.create({
     borderColor: colors.headerBackground, // Verde musgo igual ao header
     padding: 0,
   },
-  container: { 
-    borderRadius: 12, 
-    overflow: 'hidden', 
-    backgroundColor: colors.surfaceAlt, 
-    borderWidth: 1, 
-    borderColor: colors.cardOutline 
+  container: {
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: colors.surfaceAlt,
+    borderWidth: 1,
+    borderColor: colors.cardOutline,
   },
   image: { width: '100%', height: '100%' },
   date: { color: colors.textMuted, fontSize: 10, marginTop: 6 },

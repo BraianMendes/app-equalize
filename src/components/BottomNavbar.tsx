@@ -1,6 +1,8 @@
 import React from 'react';
+import type { ImageSourcePropType } from 'react-native';
 import { View, StyleSheet, Platform, Image } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
+import type { IconName } from '../design-system/Icon';
 import Icon from '../design-system/Icon';
 import { colors } from '../theme/colors';
 
@@ -35,8 +37,8 @@ const IdentityIcon = ({ color = colors.navText }: { color?: string }) => (
 type NavItem = {
   key: string;
   label: string;
-  icon?: React.ComponentProps<typeof Icon>['name'];
-  imageSource?: any; // Para usar require() ou {uri: ''}
+  icon?: IconName;
+  imageSource?: ImageSourcePropType; // Para usar require() ou {uri: ''}
   customIcon?: 'identity'; // Para ícones customizados
   onPress?: () => void;
 };
@@ -92,7 +94,14 @@ const styles = StyleSheet.create({
   },
   itemTouchable: { flex: 1, borderRadius: 12 },
   item: { alignItems: 'center', justifyContent: 'center' },
-  label: { color: colors.navText, marginTop: 4, fontSize: 9, lineHeight: 11, maxWidth: 64, textAlign: 'center' },
+  label: {
+    color: colors.navText,
+    marginTop: 4,
+    fontSize: 9,
+    lineHeight: 11,
+    maxWidth: 64,
+    textAlign: 'center',
+  },
   iconImage: { width: 24, height: 24, tintColor: colors.navText },
   // Estilos para o ícone customizado de identidade
   customIcon: {

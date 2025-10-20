@@ -1,29 +1,35 @@
 import type { HomeRepository } from '../../domain/home/types';
 import { MockHomeRepository } from './MockHomeRepository';
 import { RemoteHomeRepository } from './RemoteHomeRepository';
-import { CircuitBreakerRepositoryDecorator } from '../resilience/CircuitBreakerRepositoryDecorator';
-import { RetryRepositoryDecorator } from '../resilience/RetryRepositoryDecorator';
-import { TimeoutRepositoryDecorator } from '../resilience/TimeoutRepositoryDecorator';
 import { FailoverCompositeRepository } from './FailoverCompositeRepository';
 import { CircuitOpenPreferMockStrategy } from './strategy/RepositorySelectionStrategy';
+import type { AppConfig, RepoKind } from '../../app/config';
+import { ResiliencePipelineBuilder } from '../resilience/ResiliencePipelineBuilder';
+import { ExponentialBackoff } from '../resilience/backoff/BackoffStrategy';
 
-export type HomeRepoKind = 'mock' | 'remote';
+export type HomeRepoKind = RepoKind;
 
 export class HomeRepositoryFactory {
-  static create(kind: HomeRepoKind = 'mock'): HomeRepository {
-    switch (kind) {
-      case 'mock':
-      default:
-        return new MockHomeRepository();
-      case 'remote':
-  // Compose decorators (outermost first): CircuitBreaker -> Retry -> Timeout -> Remote
-  const remote = new RemoteHomeRepository('https://api.example.com');
-  const withTimeout = new TimeoutRepositoryDecorator(remote, 4000);
-  const withRetry = new RetryRepositoryDecorator(withTimeout, 3, 300);
-  const withBreaker = new CircuitBreakerRepositoryDecorator(withRetry, 3, 3000);
+  static create(kind: HomeRepoKind, baseUrl: string): HomeRepository {
+    if (kind === 'mock') return new MockHomeRepository();
+    const remote = new RemoteHomeRepository(baseUrl);
+    return composeResilient(remote);
+  }
+}
+
+// Separate composition for SRP and reuse/testing
+export function composeResilient(primary: HomeRepository): HomeRepository {
+  const pipeline = new ResiliencePipelineBuilder()
+    .timeout(4000)
+    .retry(3, new ExponentialBackoff(300, 2))
+    .circuitBreaker(3, 3000);
+  const withBreaker = pipeline.build(primary);
   const mock = new MockHomeRepository();
   const strategy = new CircuitOpenPreferMockStrategy();
   return new FailoverCompositeRepository(withBreaker, mock, strategy);
-    }
-  }
+}
+
+// Build from app config to enforce DIP at the composition root
+export function buildHomeRepositoryFromConfig(cfg: AppConfig): HomeRepository {
+  return HomeRepositoryFactory.create(cfg.repoKind, cfg.apiBaseUrl);
 }

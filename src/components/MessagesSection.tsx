@@ -31,6 +31,6 @@ export default function MessagesSection({ messages }: MessagesSectionProps) {
 const styles = StyleSheet.create({
   container: { paddingHorizontal: layout.screenPadding, paddingTop: 8 },
   whiteDivider: { backgroundColor: '#FFFFFF' },
-  list: { },
+  list: {},
   rowWrap: {},
 });
